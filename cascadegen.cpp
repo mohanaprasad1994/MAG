@@ -157,13 +157,14 @@ void print(TVec<Node> *v){
 }
 
 void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,  TVec<Node> *v){
+	cerr<<"Create node called\n";
 	TStr key = get_hash_key(AuthID, Graph, index_start, index_end); //see if it comes correctly
-	  cerr<<key.CStr()<<"\n";
+	  cerr<<key.CStr()<<" "<<index_start<< " "<<index_end<<"\n";
 	  if(tree_node_hash.IsKey(key)){
 		  *v = tree_node_hash.GetDat(key);
 	  }
 	  else if(index_end-index_start == 1){
-
+		  cerr<<"reached base case\n";
 		  TNGraph::TNodeI NI = Graph->GetNI(AuthID);
 		  v = new TVec<Node>();
 
