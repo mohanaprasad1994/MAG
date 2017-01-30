@@ -289,7 +289,8 @@ int main(int argc,char* argv[]) {
   cerr<<currentDateTime()<<endl;
   PTable P;
   {
-  TFIn SIn("/lfs/madmax6/0/mohanas/snap-dev/examples/cascadegen/paperAuthAfflTable3.bin");
+  //TFIn SIn("/lfs/madmax6/0/mohanas/snap-dev/examples/cascadegen/paperAuthAfflTable3.bin");
+  TFIn SIn("/lsfs/mohanas/paperAuthAfflTable3.bin");
   cerr<<"Sin done";
   P = TTable::Load(SIn, &Context);
   Context.Load(SIn);
