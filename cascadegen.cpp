@@ -151,9 +151,9 @@ TStr get_hash_key(int AuthID, PNGraph G, int index_start, int index_end){
 void print(TVec<Node> *v){
 	for (int i = 0; i < v->Len(); i ++){
 		Node node = (*v)[i];
-		cout<<" START "<<node.AuthID<<" "<<node.count<<" "<<node.deg<<" END    ";
+		cerr<<" START "<<node.AuthID<<" "<<node.count<<" "<<node.deg<<" END    ";
 	}
-	cout<<endl;
+	cerr<<endl;
 }
 
 void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,  TVec<Node> *v){
@@ -184,13 +184,21 @@ void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,
 
 	  }
 	  else{
+		  cerr<<"here1";
 		  TVec<Node> *v1, *v2;
 		  create_tree_node(AuthID, index_start, index_end-1, Graph, v1);
+		  cerr<<"here2";
+
 		  create_tree_node(AuthID, index_end-1, index_end, Graph, v2);
+		  cerr<<"here3";
+
 		  v = new TVec<Node>();
 		  v->Reserve(v1->Len());
+		  cerr<<"here4";
 
 		  merge(v1,v2,v);
+		  cerr<<"here5";
+
 		  print(v1);
 		  print(v2);
 		  print(v);
