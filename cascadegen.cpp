@@ -161,7 +161,8 @@ void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,
 	TStr key = get_hash_key(AuthID, Graph, index_start, index_end); //see if it comes correctly
 	  cerr<<key.CStr()<<" "<<index_start<< " "<<index_end<<"\n";
 	  if(tree_node_hash.IsKey(key)){
-		  *v = tree_node_hash.GetDat(key);
+		  cerr<<"Already seen node"<<endl;
+		  v = &tree_node_hash.GetDat(key);
 	  }
 	  else if(index_end-index_start == 1){
 		  cerr<<"reached base case\n";
@@ -267,7 +268,7 @@ int main(int argc,char* argv[]) {
   for (int i = 0; i < num_auth; i++){
 	  if (auth_deg[i].first != deg_prev){
 		  deg_prev = auth_deg[i].first;
-		  cerr<< deg_prev<<endl;
+		  cerr<< deg_prev<<" "<<i<<" "<<currentDateTime()<<endl;
 	  }
 	  if (i%10000 == 0){
 		  cout<< i <<" "<<currentDateTime()<<endl;
