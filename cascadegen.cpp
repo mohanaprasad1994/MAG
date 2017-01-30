@@ -162,7 +162,7 @@ void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,
 	  cerr<<key.CStr()<<" "<<index_start<< " "<<index_end<<"\n";
 	  if(tree_node_hash.IsKey(key)){
 		  cerr<<"Already seen node"<<endl;
-		  v = &tree_node_hash.GetDat(key);
+		  v = const_cast<TVec<Node>*> (& (tree_node_hash.GetDat(key)));
 	  }
 	  else if(index_end-index_start == 1){
 		  cerr<<"reached base case\n";
