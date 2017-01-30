@@ -87,20 +87,13 @@ void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* &v){ // assuming the two
 
 			}
 			else if (node1.AuthID < node2.AuthID){
-				Node* node = new Node(); // need not do it, can optimize by reusing
-				node->AuthID = node1.AuthID;
-				node->count = node1.count; // assuming the two tree nodes don't have institutions in common
-				node->deg = node1.deg;
-				v->Add(*node);
+				v->Add(node1);
 				j++;
 
 			}
 			else if (node1.AuthID > node2.AuthID){
-				Node* node = new Node(); // need not do it, can optimize by reusing
-				node->AuthID = node2.AuthID;
-				node->count = node2.count; // assuming the two tree nodes don't have institutions in common
-				node->deg = node2.deg;
-				v->Add(*node);
+
+				v->Add(node2);
 				k++;
 
 			}
@@ -111,11 +104,8 @@ void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* &v){ // assuming the two
 				j++;
 			}
 			else {
-				Node* node = new Node();
-				node->AuthID = node1.AuthID;
-				node->count = node1.count; // assuming the two tree nodes don't have institutions in common
-				node->deg = node1.deg;
-				v->Add(*node);
+
+				v->Add(node1);
 				j++;
 			}
 		}
@@ -125,11 +115,8 @@ void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* &v){ // assuming the two
 				k++;
 			}
 			else {
-				Node* node = new Node();
-				node->AuthID = node2.AuthID;
-				node->count = node2.count; // assuming the two tree nodes don't have institutions in common
-				node->deg = node2.deg;
-				v->Add(*node);
+
+				v->Add(node2);
 				k++;
 			}
 		}
