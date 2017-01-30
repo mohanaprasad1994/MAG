@@ -7,15 +7,27 @@
 #include <unistd.h>
 #include <vector>
 #include <utility>
+#include <algorithm>
 using namespace std;
 /// Node for storing author information in a tree node/////
-struct Node {
+class Node {
+public:
 	int AuthID;
 	int deg;
 	int count;
+	void Save(TSOut SOut){
+		SOut.Save(AuthID);
+		SOut.Save(deg);
+		SOut.Save(count);
+	}
+	void Load(TSIn SIn){
+			SIn.Load(AuthID);
+			SIn.Load(deg);
+			SIn.Load(count);
+		}
 };
 
-TStrHash<TVec<Node>> tree_node_hash;
+TStrHash<TVec<Node> > tree_node_hash;
 
 const std::string currentDateTime() {
     time_t     now = time(0);
@@ -56,8 +68,8 @@ void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* v){ // assuming the two 
 	int len2 = v2->Len();
 	if (len1 > 0 && len2 > 0){
 		while(j < len1 && k < len2){
-			Node node1 = v1[j];
-			Node node2 = v2[k];
+			Node node1 = (*v1)[j];
+			Node node2 = (*v2)[k];
 			if(node1.count == node1.deg){ // assuming the two tree nodes don't have institutions in common else we should also remove in other list
 				j++;
 			}
@@ -94,7 +106,7 @@ void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* v){ // assuming the two 
 			}
 		}
 		while(j < len1){
-			Node node1 = v1[j];
+			Node node1 = (*v1)[j];
 			if(node1.count == node1.deg){ // assuming the two tree nodes don't have institutions in common else we should also remove in other list
 				j++;
 			}
@@ -108,7 +120,7 @@ void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* v){ // assuming the two 
 			}
 		}
 		while(k < len2){
-			Node node2 = v2[k];
+			Node node2 = (*v2)[k];
 			if(node2.count == node2.deg){ // assuming the two tree nodes don't have institutions in common else we should also remove in other list
 				k++;
 			}
@@ -130,7 +142,7 @@ TStr get_hash_key(int AuthID, PNGraph G, int index_start, int index_end){
 	TNGraph::TNodeI NI = G->GetNI(AuthID);
 	TStr key = TStr("");
 	for (int i = index_start; i < index_end; i++){
-		key += TStr(to_string(NI.GetOutNId(i)));
+		key += TStr(to_string(NI.GetOutNId(i)).c_str());
 		key += "-";
 	}
 	return key;
@@ -146,7 +158,7 @@ void print(TVec<Node> *v){
 
 void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,  TVec<Node> *v){
 	TStr key = get_hash_key(AuthID, Graph, index_start, index_end); //see if it comes correctly
-	  cerr<<TStr<<"\n";
+	  cerr<<key.CStr()<<"\n";
 	  if(tree_node_hash.IsKey(key)){
 		  *v = tree_node_hash.GetDat(key);
 	  }
@@ -239,7 +251,7 @@ int main(int argc,char* argv[]) {
   vector< pair <int,int> > auth_deg;
   for (TNGraph::TNodeI NI = Graph->BegNI(); NI < Graph->EndNI(); NI++){
 	  if (NI.GetOutDeg() > 0)
-		  auth_deg.append(pair(NI.GetOutDeg(), NI.GetId()));
+		  auth_deg.push_back(pair<int,int>(NI.GetOutDeg(), NI.GetId()));
   }
   sort(auth_deg.begin(), auth_deg.end());
   ofstream deg_fil;
@@ -254,7 +266,7 @@ int main(int argc,char* argv[]) {
   for (int i = 0; i < num_auth; i++){
 	  if (auth_deg[i].first != deg_prev){
 		  deg_prev = auth_deg[i].first;
-		  cerr<< deg_prev<endl;
+		  cerr<< deg_prev<<endl;
 	  }
 	  if (i%10000 == 0){
 		  cout<< i <<" "<<currentDateTime()<<endl;
