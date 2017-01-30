@@ -61,7 +61,7 @@ float jaccard(TNGraph::TNodeI NI1, TNGraph::TNodeI NI2) {
   return ct*1.0/(lenA+lenB-ct);
 
 }
-void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* v){ // assuming the two tree nodes don't have institutions in common
+void merge(TVec<Node> * v1, TVec<Node>* v2, TVec<Node>* &v){ // assuming the two tree nodes don't have institutions in common
 	int j = 0;
 	int k = 0;
 	int len1 = v1->Len();
@@ -153,7 +153,7 @@ void print(TVec<Node> *v){
 		Node node = (*v)[i];
 		cerr<<" START "<<node.AuthID<<" "<<node.count<<" "<<node.deg<<" END    ";
 	}
-	cerr<<endl;
+	cerr<<"\n\n\n";
 }
 
 void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,  TVec<Node>* &v){
@@ -184,29 +184,76 @@ void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,
 
 	  }
 	  else{
-		  cerr<<"here1";
+		  //cerr<<"here1";
 		  TVec<Node> *v1, *v2;
 		  create_tree_node(AuthID, index_start, index_end-1, Graph, v1);
-		  cerr<<"here2";
+		  //cerr<<"here2";
 
 		  create_tree_node(AuthID, index_end-1, index_end, Graph, v2);
-		  cerr<<"here3";
+		  //cerr<<"here3";
 
 		  v = new TVec<Node>();
 //		  v->Reserve(v1->Len());
-		  cerr<<"here4";
+		  //cerr<<"here4";
 
 		  merge(v1,v2,v);
-		  cerr<<"here5";
+		  //cerr<<"here5";
 
-		  print(v1);
-		  print(v2);
-		  print(v);
+//		  print(v1);
+//		  print(v2);
+//		  print(v);
 		  tree_node_hash.AddDat(key,*v);
 	  }
 }
+void test_merge(){
+	Node n[4];
+	n[1].AuthID = 1;
+	n[1].count = 1;
+	n[1].deg = 1;
+	n[2].AuthID = 2;
+	n[2].count = 1;
+	n[2].deg = 2;
+	n[3].AuthID = 3;
+	n[3].count = 1;
+	n[3].deg = 3;
+
+	TVec<Node>* v1 = new TVec<Node>();
+	v1->Add(n[1]);
+	v1->Add(n[2]);
+	v1->Add(n[3]);
+
+
+	Node m[5];
+	m[1].AuthID = 1;
+	m[1].count = 1;
+	m[1].deg = 1;
+	m[2].AuthID = 2;
+	m[2].count = 1;
+	m[2].deg = 2;
+	m[3].AuthID = 4;
+	m[3].count = 1;
+	m[3].deg = 3;
+	m[4].AuthID = 5;
+	m[4].count = 1;
+	m[4].deg = 3;
+
+	TVec<Node>* v2 = new TVec<Node>();
+	v2->Add(m[1]);
+	v2->Add(m[2]);
+	v2->Add(m[3]);
+	v2->Add(m[4]);
+
+	TVec<Node>* v = new TVec<Node>();
+	merge(v1,v2,v);
+	print(v1);
+	print(v2);
+	print(v);
+
+
+}
 
 int main(int argc,char* argv[]) {
+//test_merge();
   ////////////// Load Graph /////////////
   char src_file[] = "/dfs/scratch0/dataset/MicrosoftAcademicGraph/20160205/PaperAuthorAffiliations.txt";
   TTableContext Context;
