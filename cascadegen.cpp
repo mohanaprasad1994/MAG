@@ -15,12 +15,12 @@ public:
 	int AuthID;
 	int deg;
 	int count;
-	void Save(TSOut SOut){
+	void Save(TSOut &SOut){
 		SOut.Save(AuthID);
 		SOut.Save(deg);
 		SOut.Save(count);
 	}
-	void Load(TSIn SIn){
+	void Load(TSIn &SIn){
 			SIn.Load(AuthID);
 			SIn.Load(deg);
 			SIn.Load(count);
@@ -142,7 +142,7 @@ TStr get_hash_key(int AuthID, PNGraph G, int index_start, int index_end){
 	TNGraph::TNodeI NI = G->GetNI(AuthID);
 	TStr key = TStr("");
 	for (int i = index_start; i < index_end; i++){
-		key += TStr(to_string(NI.GetOutNId(i)).c_str());
+		key += TStr(TInt::GetStr(NI.GetOutNId(i)));
 		key += "-";
 	}
 	return key;
