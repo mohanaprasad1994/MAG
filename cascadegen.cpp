@@ -156,7 +156,7 @@ void print(TVec<Node> *v){
 	cerr<<endl;
 }
 
-void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,  TVec<Node> *v){
+void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,  TVec<Node>* &v){
 	//cerr<<"Create node called\n";
 	TStr key = get_hash_key(AuthID, Graph, index_start, index_end); //see if it comes correctly
 	  //cerr<<key.CStr()<<" "<<index_start<< " "<<index_end<<"\n";
@@ -193,7 +193,7 @@ void create_tree_node(int AuthID, int index_start, int index_end, PNGraph Graph,
 		  cerr<<"here3";
 
 		  v = new TVec<Node>();
-		  v->Reserve(v1->Len());
+//		  v->Reserve(v1->Len());
 		  cerr<<"here4";
 
 		  merge(v1,v2,v);
